@@ -1,247 +1,72 @@
 import tkinter as tk
+from PIL import Image, ImageTk
 
-class GUI:
-    def __init__(self):
-        self.window = tk.Tk()
-        self.window.title("Web Scraper")
-        self.window.geometry("800x600")
-        self.window.config(bg="#F89880")
-        self.window.resizable(True, True)
-        self.create_frames()
-        self.place_frames()
+class WebScraper:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("WebScraper")
+        self.root.geometry("800x700")
+        self.root.config(bg="#F4E3CB")
 
-    def create_frames(self):
-        self.main_frame()
-        self.title_frame()
-        self.button_frame()
-        self.content_frame()
-        self.acknowledgments_frame()
+        self.frame = MainFrame(self.root)
+        self.footer_frame = FooterFrame(self.root)
 
+class MainFrame:
+    def __init__(self, root):
+        self.frame = tk.Frame(root, bg="#FFE8D6", bd=10, relief=tk.RAISED)
+        self.frame.place(relx=0.5, rely=0.5, relwidth=0.85, relheight=0.8, anchor=tk.CENTER)
 
-    def place_frames(self):
-        self.place_main_frame_widgets()
-        self.place_title_frame_widgets()
-        self.place_button_frame_widgets()
-        self.place_acknowledgments_frame_widgets()
-        
+        self.header_frame = HeaderFrame(self.frame)
+        self.content_frame = ContentFrame(self.frame)
 
-    def main_frame(self):
-        self.main_frame = tk.Frame(
-            self.window,
-            bg="#FFC0CB"
-        )
-        
-    def acknowledgments_frame(self):
-        self.acknowledgments_frame = tk.Frame(
-            self.main_frame,
-            bg="#FFC0CB"
-        )
-        self.acknowledgments_label = tk.Label(
-            self.acknowledgments_frame,
-            text="A project by: Ali Almaliki.",
-            font=("Helvetica", 14),
-            bg="#FFC0CB",
-            fg="#F89880"
-        )
-    
-    def place_acknowledgments_frame_widgets(self):
-        #at the bottom of the main frame
-        self.acknowledgments_frame.place(
-            relwidth=0.9,
-            relheight=0.1,
-            relx=0.5,
-            rely=0.95,
-            anchor="center"
-        )
-        self.acknowledgments_label.place(
-            relx=0.5,
-            rely=0.5,
-            anchor="center"
-        )
+class HeaderFrame:
+    def __init__(self, root):
+        self.header_frame = tk.Frame(root, bg="#FFE8D6", bd=1, relief=tk.RAISED)
+        self.header_frame.place(relx=0, rely=0, relwidth=1, relheight=0.15, anchor=tk.NW)
 
-    def place_main_frame_widgets(self):
-        self.main_frame.place(
-            relwidth=0.9,
-            relheight=0.8,
-            relx=0.5,
-            rely=0.5,
-            anchor="center"
-        )
+        self.create_header()
 
-        self.main_frame.config(
-            highlightthickness=5,
-            highlightbackground="#673147",
-            highlightcolor="#673147"
-        )
+    def create_header(self):
+        label_text = tk.Label(self.header_frame, text="Web Scraper", font=("Arial", 28, "bold"), bg="#FFE8D6", fg="#C47804")
+        label_text.pack(pady=10)
 
-    def title_frame(self):
-        self.title_frame = tk.Frame(
-            self.main_frame,
-            bg="#FFC0CB"
-        )
-        
+class ContentFrame:
+    def __init__(self, root):
+        self.content_frame = tk.Frame(root, bg="#FFE8D6", bd=2, relief=tk.RAISED)
+        self.content_frame.place(relx=0, rely=0.15, relwidth=1, relheight=0.85, anchor=tk.NW)
 
-        # logo is called appIcon.png inside the images folder
-        self.logo = tk.PhotoImage(file="images/appIcon.png")
-        self.logo_label = tk.Label(
-            self.title_frame,
-            image=self.logo,
-            bg="#FFC0CB"
-        )
+        self.create_content()
 
-        self.title_label = tk.Label(
-            self.title_frame,
-            text="Web Scraper",
-            font=("Helvetica", 34),
-            bg="#FFC0CB",
-            fg="#673147"
-        )
-
-        self.title_line = tk.Label(
-            self.main_frame,
-            bg="#673147"
-        )
-        
-
-    def place_title_frame_widgets(self):
-        self.title_frame.place(
-            relwidth=0.9,
-            relheight=0.15,
-            relx=0.5,
-            rely=0.1,
-            anchor="center"
-        )
-
-        self.logo_label.place(
-            relx=0.15,
-            rely=0.4,
-            anchor="e"
-        )
-
-        self.title_label.place(
-            relx=0.5,
-            rely=0.4,
-            anchor="center"
-        )
-
-        self.title_line.place(
-            relwidth=0.9,
-            relheight=0.005,
-            relx=0.5,
-            rely=0.15,
-            anchor="center"
-        )
-
-    def button_frame(self):
-        self.button_frame = tk.Frame(
-            self.main_frame,
-            bg="#FFC0CB"
-        )
+    def create_content(self):
+        label = tk.Label(self.content_frame, text="What would you like to scrape?", font=("Arial", 22), bg="#FFE8D6", fg="#C47804")
+        label.pack(pady=(20, 10))
 
         button_names = ["News", "E-commerce", "Social Media", "Job Boards", "Weather", "Recipes"]
-        self.buttons = []
-        for i in range(6):
-            if i < len(button_names):
-                button = tk.Button(
-                    self.button_frame,
-                    text=button_names[i],
-                    font=("Helvetica", 24),
-                    bg="#FFC0CB",
-                    fg="#673147",
-                    relief="raised",
-                    bd=1,
-                    compound=tk.TOP
-                )
-                logo = tk.PhotoImage(file="images/" + button_names[i] + ".png")
-                button.config(image=logo)
-                button.image = logo
 
-                button.grid(
-                    row=i // 3,
-                    column=i % 3,
-                    padx=5,
-                    pady=5,
-                    sticky="nsew"
-                )
+        buttons_frame = tk.Frame(self.content_frame, bg="#FFE8D6")
+        buttons_frame.pack(pady=(0, 20))
 
-                button.config(command=lambda btn=button: self.button_click(btn))
+        for i in range(2):
+            buttons_frame.grid_rowconfigure(i, weight=1)
+            for j in range(3):
+                buttons_frame.grid_columnconfigure(j, weight=1)
 
-                self.buttons.append(button)
+                button = tk.Button(buttons_frame, text=button_names[i*3 + j], width=15, height=5,
+                                font=("Arial", 18), fg="#C47804", padx=10, pady=10)
+                button.grid(row=i, column=j, padx=10, pady=10)
 
-        self.button_frame.grid_columnconfigure((0, 1, 2), weight=1)
-        self.button_frame.grid_rowconfigure((0, 1, 2), weight=1)
+class FooterFrame:
+    def __init__(self, root):
+        self.footer_frame = tk.Frame(root, bg="#F4E3CB")
+        self.footer_frame.place(relx=0, rely=1, relwidth=1, anchor=tk.SW)
+
+        self.create_footer()
+
+    def create_footer(self):
+        label = tk.Label(self.footer_frame, text="A project by: Ali Almaliki.", font=("Arial", 12), bg="#F4E3CB", fg="#C47804")
+        label.pack(pady=10)
 
 
-
-    def place_button_frame_widgets(self):
-        self.button_frame.place(
-            relwidth=0.9,
-            relheight=0.6,
-            relx=0.5,
-            rely=0.5,
-            anchor="center"
-        )
-
-    def button_click(self, button):
-        self.title_label.config(text=button["text"])
-        self.logo = tk.PhotoImage(file="images/" + button["text"] + ".png")
-        self.logo_label.config(image=self.logo)
-        self.button_frame.place_forget()
-        self.acknowledgments_frame.place_forget()
-        self.place_content_frame()
-
-    def back_click(self):
-        self.title_label.config(text="Web Scraper")
-        self.logo = tk.PhotoImage(file="images/appIcon.png")
-        self.place_acknowledgments_frame_widgets()
-        self.logo_label.config(image=self.logo)
-        self.content_frame.place_forget()
-        self.place_button_frame_widgets()
-
-    def content_frame(self):
-        self.content_frame = tk.Frame(
-            self.main_frame,
-            bg="#FFC0CB"
-        )
-        
-
-        self.back_button = tk.Button(
-            self.content_frame,
-            text="Back",
-            font=("Helvetica", 20),
-            bg="#FFC0CB",
-            fg="#673147",
-            relief="raised",
-            height=1,
-            width=10,
-            bd=1,
-            command=self.back_click
-        )
-
-    def place_content_frame(self):
-            self.content_frame.place(
-                relwidth=0.9,
-                relheight=0.8,
-                relx=0.5,
-                rely=0.6,
-                anchor="center"
-            )
-            
-            self.back_button.place(
-                relx=0,
-                rely=0.95,
-                anchor="sw"
-            )
-
-
-        # search bar with the placeholder "Search for something..."
-
-        # search button
-
-        # label : desired output format
-        
-        # radio buttons : csv, text, xml
-
-if __name__ == "__main__":
-    gui = GUI()
-    gui.window.mainloop()
+root = tk.Tk()
+app = WebScraper(root)
+root.mainloop()
